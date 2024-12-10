@@ -2,7 +2,10 @@ package com.chr.shoppingmall.mapper;
 
 
 import com.chr.shoppingmall.entity.product;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,22 +20,35 @@ public interface productMapper {
     /**
      * 增
      */
-    int addProduct(@Param("product") product product);
+    @Insert("insert into Products values (null, #{product.name}, #{product.productStoreID}, #{product.description}, #{product.price}, #{product.stockQuantity}, #{product.categoryId}, #{product.imageUrl}, #{product.listedDate}, #{product.status})")
+    int addProduct(product product);
 
     /**
      * 删
      */
-    int deleteProduct(@Param("id") Integer id);
+    @Delete("delete from products where ProductID = #{id}")
+    int deleteProduct(Integer id);
 
     /**
      * 改
      */
-    int updateProduct(@Param("id") Integer id, @Param("product") product product);
+    @Update("update products set " +
+            "ProductName = #{product.name}, " +
+            "ProductStoreID = #{product.productStoreID}, " +
+            "Description = #{product.description}, " +
+            "Price = #{product.price}, " +
+            "StockQuantity = #{product.stockQuantity}, " +
+            "CategoryID = #{product.categoryId}, " +
+            "ImageURL = #{product.imageUrl}, " +
+            "ListedDate = #{product.listedDate}, " +
+            "Status = #{product.status} " +
+            "where ProductID = #{id};")
+    int updateProduct(Integer id,  product product);
 
     /**
      * 查一个
      */
-    product selectProductById(@Param("id") Integer id);
+    product selectProductById(Integer id);
 
     /**
      * 查全部
@@ -42,18 +58,16 @@ public interface productMapper {
     /**
      * 根据商家id查询商品
      */
-    List<product> selectProductByProductStoreID(@Param("ProductStoreID") Integer ProductStoreID);
+    List<product> selectProductByProductStoreID(Integer ProductStoreID);
 
     /**
      * 查各分类数量
      */
-    Integer getCount(@Param("CategoryID") Integer CategoryID);
+    @Select("select COUNT(*) from products where CategoryID = #{CategoryID}")
+    Integer getCount(Integer CategoryID);
 
     /**
      * 关键词，商品类别，价格区间，三个搜索条件可有可无进行搜索
      */
-    List<product> search(@Param("keyword") String keyword,
-                         @Param("CategoryId") Integer CategoryId,
-                         @Param("min") Double min,
-                         @Param("max") Double max);
+    List<product> search(String keyword, Integer CategoryId, Double min, Double max);
 }

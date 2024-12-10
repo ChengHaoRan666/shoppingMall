@@ -2,7 +2,10 @@ package com.chr.shoppingmall.mapper;
 
 
 import com.chr.shoppingmall.entity.user;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,16 +20,19 @@ public interface userMapper {
     /**
      * 增
      */
-    int addUser(@Param("user") user user);
+    @Insert("insert into users values (null, #{username}, #{password}, #{email}, #{phone}, #{date}, #{lestDate});")
+    int addUser( user user);
 
     /**
      * 删
      */
-    int deleteUser(@Param("id") Integer id);
+   @Delete("delete from users where UserID = #{id}")
+    int deleteUser(Integer id);
 
     /**
      * 改
      */
+    @Update("update users set Username = #{newUser.username},Password=#{newUser.password},Email=#{newUser.email},PhoneNumber=#{newUser.phone},RegistrationDate=#{newUser.date},LastLoginDate=#{newUser.lestDate} where UserID = #{id};")
     int updateUser(@Param("id") Integer id, @Param("newUser") user newUser);
 
     /**

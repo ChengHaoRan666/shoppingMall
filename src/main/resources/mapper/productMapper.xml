@@ -4,32 +4,6 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.chr.shoppingmall.mapper.productMapper">
-    <!--增-->
-    <insert id="addProduct">
-        insert into Products values (
-        null, #{product.name},#{product.productStoreID}, #{product.description}, #{product.price},
-        #{product.stockQuantity}, #{product.categoryId}, #{product.imageUrl}, #{product.listedDate}, #{product.status}
-        )
-    </insert>
-    <!--删-->
-    <delete id="deleteProduct">
-        delete from products where ProductID = #{id}
-    </delete>
-    <!--改-->
-    <update id="updateProduct">
-        update products set
-        ProductName = #{product.name},
-        ProductStoreID = #{product.productStoreID},
-        Description = #{product.description},
-        Price = #{product.price},
-        StockQuantity = #{product.stockQuantity},
-        CategoryID = #{product.categoryId},
-        ImageURL = #{product.imageUrl},
-        ListedDate = #{product.listedDate},
-        Status = #{product.status}
-        where ProductID = #{id};
-    </update>
-
     <resultMap id="productMapper" type="product">
         <id property="id" column="ProductID"/>
         <result property="name" column="ProductName"/>
@@ -53,10 +27,6 @@
         select * from products;
     </select>
 
-    <!--查各分类数量 Integer getCount(@Param("CategoryID") Integer CategoryID);-->
-    <select id="getCount" resultType="Integer">
-        select COUNT(*) from products where CategoryID = #{CategoryID}
-    </select>
 
     <!--根据商家id查询商品 List<product> selectProductByProductStoreID(Integer ProductStoreID);-->
     <select id="selectProductByProductStoreID" resultMap="productMapper">
@@ -64,21 +34,6 @@
     </select>
 
     <!--关键词，商品类别，价格区间，三个搜索条件可有可无进行搜索-->
-    <!--    <select id="search" resultMap="productMapper">-->
-    <!--        select * from Products where 1 = 1-->
-    <!--        <if test="CategoryId != null">-->
-    <!--            and CategoryID = #{CategoryId}-->
-    <!--        </if>-->
-    <!--        <if test="min != '' and min != null">-->
-    <!--            and Price >= #{min}-->
-    <!--        </if>-->
-    <!--        <if test="max != '' and max != null">-->
-    <!--            and Price &lt;= #{max}-->
-    <!--        </if>-->
-    <!--        <if test="keyword != '' and keyword != null">-->
-    <!--            and ProductName like "%"#{keyword}"%"-->
-    <!--        </if>-->
-    <!--    </select>-->
     <select id="search" resultMap="productMapper">
         select * from Products
         <where>

@@ -2,7 +2,9 @@ package com.chr.shoppingmall.mapper;
 
 
 import com.chr.shoppingmall.entity.seller;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,21 +19,29 @@ public interface sellerMapper {
     /**
      * 增
      */
-    int addSeller(@Param("seller") seller seller);
+    @Insert("insert into sellers values (null,#{seller.name},#{seller.password},#{seller.description},#{seller.email},#{seller.phone})")
+    int addSeller(seller seller);
+
     /**
      * 删
      */
-    int deleteSeller(@Param("id") Integer id);
+
+    @Delete("delete from sellers where SellerID = #{id}")
+    int deleteSeller(Integer id);
+
     /**
      * 改
      */
-    int updateSeller(@Param("id") Integer id, @Param("newSeller") seller newseller);
+    @Update("update sellers set SellerName = #{newSeller.name}, Password=#{newSeller.password}, Description=#{newSeller.description}, Email=#{newSeller.email}, PhoneNumber=#{newSeller.phone} where SellerID = #{id};")
+    int updateSeller(Integer id, seller newSeller);
+
     /**
-     * 通过 id 查询单个用户信息
+     * 通过 id 查询单个商家信息
      */
-    seller selectSellerById(@Param("id") Integer id);
+    seller selectSellerById(Integer id);
+
     /**
-     * 查询所有用户信息
+     * 查询所有商家信息
      */
     List<seller> selectSellerAll();
 }

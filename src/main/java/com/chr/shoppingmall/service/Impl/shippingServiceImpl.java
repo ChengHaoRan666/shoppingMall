@@ -71,13 +71,6 @@ public class shippingServiceImpl implements shippingService {
     }
 
 
-    /**
-     * 修改订单状态
-     */
-    @Override
-    public void delivery(Integer userId, Integer productId, String OrderStatus) {
-        orderDao.updateOrderStatus(userId, productId, OrderStatus);
-    }
 
     /**
      * 修改订单状态

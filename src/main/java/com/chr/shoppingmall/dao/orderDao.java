@@ -47,12 +47,6 @@ public class orderDao implements orderMapper {
         return orderMapper.deleteOrderByUserId(userId);
     }
 
-    /**
-     * 修改订单状态
-     */
-    public int updateOrderStatus(Integer userId, Integer productId, String OrderStatus) {
-        return orderMapper.updateOrderStatus(userId, productId, OrderStatus);
-    }
 
     /**
      * 修改订单状态

@@ -4,44 +4,5 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.chr.shoppingmall.mapper.cartMapper">
-    <!--增 int addCart(@Param("cart") cart cart);-->
-    <insert id="addCart">
-        insert into carts values (null, #{cart.userID}, #{cart.productID}, #{cart.quantity});
-    </insert>
-    <!--删 int deleteCart(@Param("CartID") Integer CartID);-->
-    <delete id="deleteCart">
-        delete from carts where CartID = #{CartID};
-    </delete>
-    <!--删 int deleteCartByUserId(@Param("userId") Integer userId);-->
-    <delete id="deleteCartByUserId">
-        delete from carts where UserID = #{userId};
-    </delete>
-<!--删 int deleteCartByProductId(@Param("productId") Integer productId);-->
-    <delete id="deleteCartByProductId">
-        delete from carts where ProductID=#{productId}
-    </delete>
 
-
-    <!--int deleteCartByUserIdProductId(@Param("userId") Integer userId, @Param("ProductId") Integer ProductId);-->
-    <delete id="deleteCartByUserIdProductId">
-        delete from carts where UserID = #{userId} and ProductID=#{ProductId}
-    </delete>
-
-    <!--改 int updateCart(@Param("CartID") Integer cartID, @Param("cart") cart cart);-->
-    <update id="updateCart">
-        update carts set UserID = #{cart.userID}, ProductID = #{cart.productID}, Quantity = #{cart.quantity} where
-        CartID = #{CartID};
-    </update>
-
-    <resultMap id="cartMapper" type="cart">
-        <id property="cartID" column="CartID"/>
-        <result property="userID" column="UserID"/>
-        <result property="productID" column="ProductID"/>
-        <result property="quantity" column="Quantity"/>
-    </resultMap>
-
-    <!--查  List<cart> selectCart(@Param("UserId") Integer userId);-->
-    <select id="selectCart" resultMap="cartMapper">
-        select * from carts where UserID = #{UserId};
-    </select>
 </mapper>

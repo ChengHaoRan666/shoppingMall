@@ -5,73 +5,6 @@
 
 
 <mapper namespace="com.chr.shoppingmall.mapper.orderMapper">
-    <!--增 -->
-    <!--    int addOrder(-->
-    <!--    @Param("userId") Integer userId,-->
-    <!--    @Param("productId") Integer productId,-->
-    <!--    @Param("sellerId") Integer sellerId,-->
-    <!--    @Param("quantity") Integer quantity,-->
-    <!--    @Param("totalAmount") Double totalAmount,-->
-    <!--    @Param("deliveryAddress") String deliveryAddress,-->
-    <!--    @Param("recipientName") String recipientName,-->
-    <!--    @Param("recipientPhone") String recipientPhone,-->
-    <!--    @Param("orderStatus") String orderStatus,-->
-    <!--    @Param("notes") String notes,-->
-    <!--    @Param("orderDate") Date orderDate,-->
-    <!--    @Param("paymentDate") Date paymentDate,-->
-    <!--    @Param("shippingDate") Date shippingDate,-->
-    <!--    @Param("deliveryDate") Date deliveryDate-->
-    <!--    );-->
-
-    <insert id="addOrder">
-        insert into orders values (
-        null, #{userId}, #{productId}, #{sellerId},#{quantity}, #{totalAmount}, #{deliveryAddress},
-        #{recipientName}, #{recipientPhone},#{notes}, #{orderStatus}, #{orderDate}, #{paymentDate},
-        #{shippingDate}, #{deliveryDate}
-        )
-    </insert>
-
-    <!--删 int deleteOrder(@Param("id") Integer id);-->
-    <delete id="deleteOrder">
-        delete from orders where OrderID = #{id}
-    </delete>
-    <!--删 int deleteOrderByUserId(@Param("userId") Integer userId);-->
-    <delete id="deleteOrderByUserId">
-        delete from orders where UserID = #{userId}
-    </delete>
-    <!--修改订单状态     int updateOrderStatus(@Param("userId") Integer id, @Param("productId") Integer productId, @Param("OrderStatus") String OrderStatus);-->
-    <update id="updateOrderStatus">
-        update Orders set
-        OrderStatus = #{OrderStatus}
-        where UserID= #{userId} and ProductID=#{productId}
-    </update>
-    <!--修改订单状态通过订单id    int updateOrderStatusByOrderId(@Param("orderId") Integer orderId, @Param("OrderStatus") String OrderStatus);-->
-    <update id="updateOrderStatusByOrderId">
-        update Orders set
-        OrderStatus = #{OrderStatus}
-        where OrderID= #{orderId}
-    </update>
-
-
-    <!-- 修改订单收货时间   void updateOrderDeliveryDate(@Param("orderId")Integer orderId, @Param("deliveryDate")Date deliveryDate); -->
-    <update id="updateOrderDeliveryDate">
-        update Orders set
-        DeliveryDate = #{deliveryDate}
-        where OrderID= #{orderId}
-    </update>
-
-    <!-- 修改订单发货时间   void updateOrderShippingDate(@Param("orderId")Integer orderId, @Param("shippingDate")Date shippingDate); -->
-    <update id="updateOrderShippingDate">
-        update Orders set
-        ShippingDate = #{shippingDate}
-        where OrderID= #{orderId}
-    </update>
-
-    <!--int deleteByUserIdProductId(@Param("userId") Integer userId,@Param("ProductId") String ProductId);-->
-    <delete id="deleteByUserIdProductId">
-        delete from orders where UserID = #{userId} and ProductID = #{ProductId}
-    </delete>
-
     <resultMap id="orderMapper" type="order">
         <id property="id" column="OrderID"/>
         <result property="userId" column="UserID"/>
@@ -90,24 +23,11 @@
         <result property="deliveryDate" column="DeliveryDate"/>
     </resultMap>
 
-    <!--根据订单id查询单条 order selectOrderById(@Param("id") Integer id);-->
-    <select id="selectOrderById" resultMap="orderMapper">
-        select * from Orders where OrderID = #{id}
-    </select>
-
-    <!-- 根据用户id查询多条 List<order> selectOrderByUserId(@Param("userId") Integer userId);-->
-    <select id="selectOrderByUserId" resultMap="orderMapper">
-        select * from Orders where UserID = #{userId}
-    </select>
-
     <!-- 根据商家id查询多条 List<order> selectOrderBySellerID(@Param("sellerId") Integer sellerId);-->
     <select id="selectOrderBySellerID" resultMap="orderMapper">
         select * from Orders where SellerID = #{sellerId}
     </select>
 
-    <select id="getNumber" resultType="Integer">
-        select count(*) from Orders where UserID = #{userId}
-    </select>
 
     <!--  获取已签收未评价的商品通过userid  List<order> getNoEvaluationOrder(@Param("userId") Integer userId);-->
     <select id="getNoEvaluationOrder" resultMap="orderMapper">

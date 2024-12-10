@@ -56,12 +56,7 @@ public class cartDao implements cartMapper {
         return cartMapper.deleteCartByProductId(productId);
     }
 
-    /**
-     * 改
-     */
-    public int updateCart(Integer cartID, cart cart) {
-        return cartMapper.updateCart(cartID, cart);
-    }
+
 
     /**
      * 查

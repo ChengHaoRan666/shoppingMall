@@ -2,7 +2,9 @@ package com.chr.shoppingmall.mapper;
 
 
 import com.chr.shoppingmall.entity.review;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,15 +19,18 @@ public interface reviewMapper {
     /**
      * 增
      */
-    int addReview(@Param("review") review review);
+    @Insert("insert into reviews values (null, #{review.productId}, #{review.userId}, #{review.rating}, #{review.comment}, #{review.reviewTime});")
+    int addReview(review review);
 
     /**
      * 通过商品id查找
      */
-    List<review> selectReviewByproductId(@Param("productId") Integer productId);
+    @Select("select * from Reviews where ProductID = #{productId}")
+    List<review> selectReviewByproductId(Integer productId);
 
     /**
      * 通过商品id删除
      */
-    int deleteByproductId(@Param("productId") Integer productId);
+    @Delete("delete from reviews where ProductID=#{productId}")
+    int deleteByproductId(Integer productId);
 }

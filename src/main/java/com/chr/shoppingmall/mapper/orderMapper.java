@@ -2,7 +2,10 @@ package com.chr.shoppingmall.mapper;
 
 
 import com.chr.shoppingmall.entity.order;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -18,81 +21,72 @@ public interface orderMapper {
     /**
      * 增
      */
-    int addOrder(
-            @Param("userId") Integer userId,
-            @Param("productId") Integer productId,
-            @Param("sellerId") Integer sellerId,
-            @Param("quantity") Integer quantity,
-            @Param("totalAmount") Double totalAmount,
-            @Param("deliveryAddress") String deliveryAddress,
-            @Param("recipientName") String recipientName,
-            @Param("recipientPhone") String recipientPhone,
-            @Param("orderStatus") String orderStatus,
-            @Param("notes") String notes,
-            @Param("orderDate") Date orderDate,
-            @Param("paymentDate") Date paymentDate,
-            @Param("shippingDate") Date shippingDate,
-            @Param("deliveryDate") Date deliveryDate
-    );
+    @Insert("insert into orders values (null, #{userId}, #{productId}, #{sellerId},#{quantity}, #{totalAmount}, #{deliveryAddress},#{recipientName}, #{recipientPhone},#{notes}, #{orderStatus}, #{orderDate}, #{paymentDate},#{shippingDate}, #{deliveryDate})")
+    int addOrder(Integer userId, Integer productId, Integer sellerId, Integer quantity, Double totalAmount, String deliveryAddress, String recipientName, String recipientPhone, String orderStatus, String notes, Date orderDate, Date paymentDate, Date shippingDate, Date deliveryDate);
 
     /**
      * 删
      */
-    int deleteOrder(@Param("id") Integer id);
+    @Delete("delete from orders where OrderID = #{orderId}")
+    int deleteOrder( Integer orderId);
 
     /**
      * 根据用户id删订单表
      */
-    int deleteOrderByUserId(@Param("userId") Integer userId);
+    @Delete("delete from orders where UserID = #{userId}")
+    int deleteOrderByUserId( Integer userId);
 
     /**
      * 修改订单状态
      */
-    int updateOrderStatus(@Param("userId") Integer id, @Param("productId") Integer productId, @Param("OrderStatus") String OrderStatus);
-
-    /**
-     * 修改订单状态
-     */
-    int updateOrderStatusByOrderId(@Param("orderId") Integer orderId, @Param("OrderStatus") String OrderStatus);
+    @Update("update Orders set OrderStatus = #{OrderStatus} where OrderID= #{orderId}")
+    int updateOrderStatusByOrderId( Integer orderId, String OrderStatus);
 
     /**
      * 通过userId和 ProductID删除
      */
-    int deleteByUserIdProductId(@Param("userId") Integer userId, @Param("ProductId") Integer ProductId);
+    @Delete("delete from orders where UserID = #{userId} and ProductID = #{ProductId}")
+    int deleteByUserIdProductId( Integer userId,  Integer ProductId);
 
     /**
      * 根据订单id查询订单
      */
-    order selectOrderById(@Param("id") Integer id);
+    @Select("select * from Orders where OrderID = #{id}")
+    order selectOrderById( Integer id);
 
     /**
      * 根据用户id查询所有用户订单
      */
-    List<order> selectOrderByUserId(@Param("userId") Integer userId);
+    @Select("select * from Orders where UserID = #{userId}")
+    List<order> selectOrderByUserId( Integer userId);
 
     /**
      * 根据商家id查询所有商家订单
      */
-    List<order> selectOrderBySellerID(@Param("sellerId") Integer sellerId);
+    List<order> selectOrderBySellerID( Integer sellerId);
 
     /**
      * 获取用户订单数量
      */
-    Integer getNumber(@Param("userId") Integer userId);
+    @Select("select count(*) from Orders where UserID = #{userId}")
+    Integer getNumber( Integer userId);
 
     /**
      * 获取已签收未评价的商品
      */
-    List<order> getNoEvaluationOrder(@Param("userId") Integer userId);
+    List<order> getNoEvaluationOrder( Integer userId);
 
     /**
      * 修改订单收货时间
      */
-    void updateOrderDeliveryDate(@Param("orderId")Integer orderId, @Param("deliveryDate")Date deliveryDate);
+   @Update("update Orders set DeliveryDate = #{deliveryDate} where OrderID= #{orderId}")
+    void updateOrderDeliveryDate( Integer orderId, Date deliveryDate);
+
     /**
      * 修改订单发货时间
      */
-    void updateOrderShippingDate(@Param("orderId")Integer orderId, @Param("shippingDate")Date shippingDate);
+    @Update("update Orders set ShippingDate = #{shippingDate} where OrderID= #{orderId}")
+    void updateOrderShippingDate(Integer orderId,  Date shippingDate);
 
 
 }

@@ -2,7 +2,9 @@ package com.chr.shoppingmall.mapper;
 
 
 import com.chr.shoppingmall.entity.cart;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,36 +19,39 @@ public interface cartMapper {
     /**
      * 增
      */
-    int addCart(@Param("cart") cart cart);
+    @Insert("insert into carts values (null, #{userID}, #{productID}, #{quantity})")
+    int addCart(cart cart);
 
     /**
      * 删
      */
-    int deleteCart(@Param("CartID") Integer CartID);
+    @Delete("delete from carts where CartID = #{CartID}")
+    int deleteCart(Integer CartID);
 
 
     /**
      * 根据用户id删购物车
      */
-    int deleteCartByUserId(@Param("userId") Integer userId);
+
+    @Delete("delete from carts where UserID = #{userId}")
+    int deleteCartByUserId(Integer userId);
 
     /**
      * 根据用户id和商品id删
      */
-    int deleteCartByUserIdProductId(@Param("userId") Integer userId, @Param("ProductId") Integer ProductId);
+    @Delete("delete from carts where UserID = #{userId} and ProductID=#{ProductId}")
+    int deleteCartByUserIdProductId(Integer userId, Integer ProductId);
 
     /**
      * 根据商品id删除购物车（下架）
      */
-    int deleteCartByProductId(@Param("productId") Integer productId);
+    @Delete("delete from carts where ProductID=#{productId}")
+    int deleteCartByProductId(Integer productId);
 
-    /**
-     * 改
-     */
-    int updateCart(@Param("CartID") Integer cartID, @Param("cart") cart cart);
 
     /**
      * 查
      */
-    List<cart> selectCart(@Param("UserId") Integer userId);
+    @Select("select * from carts where UserID = #{userId}")
+    List<cart> selectCart(Integer userId);
 }

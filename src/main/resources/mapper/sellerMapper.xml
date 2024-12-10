@@ -5,26 +5,6 @@
 
 
 <mapper namespace="com.chr.shoppingmall.mapper.sellerMapper">
-    <!--增 int addSeller(@Param("seller") seller seller);-->
-    <insert id="addSeller">
-        insert into sellers values
-        (null,#{seller.name},#{seller.password},#{seller.description},#{seller.email},#{seller.phone})
-    </insert>
-    <!--删 int deleteSeller(@Param("id") Integer id);-->
-    <delete id="deleteSeller">
-        delete from sellers where SellerID = #{id}
-    </delete>
-    <!--改 int updateSeller(@Param("id") Integer id, @Param("newSeller") seller newseller);-->
-    <update id="updateSeller">
-        update sellers set
-        SellerName = #{newSeller.name},
-        Password=#{newSeller.password},
-        Description=#{newSeller.description},
-        Email=#{newSeller.email},
-        PhoneNumber=#{newSeller.phone}
-        where SellerID = #{id};
-    </update>
-
     <resultMap id="sellerMapper" type="seller">
         <id property="id" column="SellerID"/>
         <result property="name" column="SellerName"/>

@@ -35,10 +35,6 @@ public interface shippingService {
      */
     void evaluate(Integer userId, Integer productId, Integer rating, String comment);
 
-    /**
-     * 修改订单状态
-     */
-    void delivery(Integer userId, Integer productId, String OrderStatus);
 
     /**
      * 修改订单状态
