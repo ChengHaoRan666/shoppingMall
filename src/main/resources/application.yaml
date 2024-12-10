@@ -1,0 +1,24 @@
+server:
+  port: 80
+  address: 0.0.0.0
+
+spring:
+  application:
+    name: shoppingMall
+  profiles:
+    active: dev
+
+  datasource:
+    driver-class-name: ${shoppingmall.datasource.driver-class-name}
+    url: jdbc:mysql://${shoppingmall.datasource.host}:${shoppingmall.datasource.port}/${shoppingmall.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${shoppingmall.datasource.username}
+    password: ${shoppingmall.datasource.password}
+
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.chr.shoppingmall.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true

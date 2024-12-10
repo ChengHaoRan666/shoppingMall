@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chr.shoppingmall.mapper.starMapper">
+    <!--增 int addStar(@Param("star") star star);-->
+    <insert id="addStar">
+        insert into stars values (null, #{star.userID}, #{star.productID}, #{star.quantity});
+    </insert>
+    <!--删 int deleteStar(@Param("StarID") Integer StarID);-->
+    <delete id="deleteStar">
+        delete from stars where StarID = #{StarID};
+    </delete>
+    <!--删除 int deleteStarByUserId(@Param("userId") Integer userId);-->
+    <delete id="deleteStarByUserId">
+        delete from stars where UserID = #{userId};
+    </delete>
+    <!--删除 int deleteStarByProductId(@Param("productId") Integer productId);-->
+    <delete id="deleteStarByProductId">
+        delete from stars where ProductID = #{productId};
+    </delete>
+
+    <!--public int deleteStarByUserIdProductId(@Param("userId") Integer userId, @Param("productId") Integer productId);-->
+    <delete id="deleteStarByUserIdProductId">
+        delete from stars where UserID =#{userId} and ProductID=#{productId}
+    </delete>
+
+
+    <!--改 int updateStar(@Param("StarID") Integer starID, @Param("star") star star);-->
+    <update id="updateStar">
+        update stars set UserID = #{star.UserID}, ProductID = #{star.productID}, Quantity = #{star.quantity} where
+        StarID = #{StarID};
+    </update>
+
+    <resultMap id="starMapper" type="star">
+        <id property="starID" column="StarID"/>
+        <result property="userID" column="UserID"/>
+        <result property="productID" column="ProductID"/>
+        <result property="quantity" column="Quantity"/>
+    </resultMap>
+
+    <!--查 List<star> selectStar( @Param("UserID") Integer userId);-->
+    <select id="selectStar" resultMap="starMapper">
+        select * from stars where UserID = #{UserID};
+    </select>
+
+    <select id="getNumber" resultType="Integer">
+        select count(*) from stars where UserID = #{userId}
+    </select>
+</mapper>
