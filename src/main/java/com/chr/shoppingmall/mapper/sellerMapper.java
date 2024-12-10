@@ -19,7 +19,7 @@ public interface sellerMapper {
     /**
      * 增
      */
-    @Insert("insert into sellers values (null,#{seller.name},#{seller.password},#{seller.description},#{seller.email},#{seller.phone})")
+    @Insert("insert into sellers values (null,#{name},#{password},#{description},#{email},#{phone})")
     int addSeller(seller seller);
 
     /**
