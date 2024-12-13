@@ -2,12 +2,12 @@ package com.chr.shoppingmall.controller;
 
 
 import com.chr.shoppingmall.entity.product;
+import com.chr.shoppingmall.entity.productAndRanting;
 import com.chr.shoppingmall.service.Impl.pageServiceImpl;
 import com.chr.shoppingmall.service.Impl.shippingServiceImpl;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +32,12 @@ public class index {
     private shippingServiceImpl shippingService;
 
     /**
+     * 内部类，商品和它的评分
+     */
+
+
+
+    /**
      * 产品类别映射
      */
     @ModelAttribute("categoryMap")
@@ -48,6 +54,7 @@ public class index {
      * 将 products 进行排序，获取前 n 名
      */
     private List<productAndRanting> sortByRantingAndSun(List<product> products, int n) {
+//        List<productAndRanting> productAndRantings = new ArrayList<>();
         List<productAndRanting> productAndRantings = new ArrayList<>();
         for (product product : products) {
             List<Integer> ratings = pageService.getRating(product.getId());
@@ -59,7 +66,7 @@ public class index {
             }
             productAndRantings.add(new productAndRanting(product, rating));
         }
-        productAndRantings.sort((o1, o2) -> o2.ranting - o1.ranting);
+        productAndRantings.sort((o1, o2) -> o2.getRanting() - o1.getRanting());
         // 删除20名之后的
         if (productAndRantings.size() > n) productAndRantings.subList(n, productAndRantings.size()).clear();
         return productAndRantings;
@@ -99,13 +106,13 @@ public class index {
         // 获取四个种类的 各个畅销榜单 商品列表（每个大小限制为30）
         List<product> BestsellerProducts1 = new ArrayList<>();
         for (productAndRanting productAndRanting : sortByRantingAndSun(pageService.search(null, 1, null, null, null), 30))
-            BestsellerProducts1.add(productAndRanting.product);
+            BestsellerProducts1.add(productAndRanting.getProduct());
         List<product> BestsellerProducts2 = new ArrayList<>();
         for (productAndRanting productAndRanting : sortByRantingAndSun(pageService.search(null, 2, null, null, null), 30))
-            BestsellerProducts2.add(productAndRanting.product);
+            BestsellerProducts2.add(productAndRanting.getProduct());
         List<product> BestsellerProducts3 = new ArrayList<>();
         for (productAndRanting productAndRanting : sortByRantingAndSun(pageService.search(null, 3, null, null, null), 30))
-            BestsellerProducts3.add(productAndRanting.product);
+            BestsellerProducts3.add(productAndRanting.getProduct());
 
 
         // 加入 session 域中
@@ -175,20 +182,4 @@ public class index {
             return ResponseEntity.ok("成功");
         }
     }
-
-    /**
-     * 内部类，商品和它的评分
-     */
-    @Data
-    private class productAndRanting {
-        product product;
-        Integer ranting;
-
-        public productAndRanting(product product, Integer ranting) {
-            this.product = product;
-            this.ranting = ranting;
-        }
-    }
-
-
 }
