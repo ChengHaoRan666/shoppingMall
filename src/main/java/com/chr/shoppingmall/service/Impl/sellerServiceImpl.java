@@ -9,6 +9,8 @@ import com.chr.shoppingmall.service.sellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -171,5 +173,52 @@ public class sellerServiceImpl implements sellerService {
         cartDao.deleteCartByProductId(productId);
         // 4. 在评论表中删除商品
         reviewDao.deleteByproductId(productId);
+    }
+
+    /**
+     * 将订单转为字符串集合返回
+     *
+     * @param orders 订单列表
+     */
+    @Override
+    public List<String[]> getOrderString(List<order> orders) {
+        List<String[]> orderStrings = new ArrayList<>();
+        for (order order : orders) {
+            /*
+            用户名称
+            商品名称
+            数量
+            总金额
+            收货地址
+            订单id
+            订单状态
+             */
+            String[] strings = new String[7];
+            strings[0] = userDao.selectUserById(order.getUserId()).getUsername();
+            strings[1] = productDao.selectProductById(order.getProductId()).getName();
+            strings[2] = String.valueOf(order.getQuantity());
+            strings[3] = String.valueOf(order.getTotalAmount());
+            strings[4] = order.getDeliveryAddress();
+            strings[5] = String.valueOf(order.getId());
+            switch (order.getOrderStatus()){
+                case "0": strings[6] = "待支付"; break;
+                case "1": strings[6] = "已支付"; break;
+                case "2": strings[6] = "已发货"; break;
+                case "3": strings[6] = "已收货"; break;
+                case "4": strings[6] = "已评价"; break;
+            }
+            orderStrings.add(strings);
+        }
+        return orderStrings;
+    }
+
+    /**
+     * 发货
+     */
+    @Override
+    public void Delivery(Integer orderId) {
+        // 修改订单状态为已发货
+        orderDao.updateOrderStatusByOrderId(orderId, "2");
+        orderDao.updateOrderShippingDate(orderId, new Date());
     }
 }

@@ -49,4 +49,14 @@ public interface sellerService {
      * 商品下架
      */
     void noShelf(Integer productId);
+
+    /**
+     * 将订单转为字符串集合返回
+     */
+    List<String[]> getOrderString(List<order> orders);
+
+    /**
+     * 发货
+     */
+    void Delivery(Integer orderId);
 }

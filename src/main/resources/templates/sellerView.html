@@ -137,34 +137,30 @@
             <thead>
             <tr>
                 <th style="text-align:center"></th>
+                <th style="text-align:center">用户名称</th>
                 <th style="text-align:center">商品名称</th>
                 <th style="text-align:center">数量</th>
-                <th style="text-align:center">金额</th>
-                <th style="text-align:center">分类</th>
-                <th style="text-align:center">状态</th>
+                <th style="text-align:center">总金额</th>
+                <th style="text-align:center">订单状态</th>
+                <th style="text-align:center">收货地址</th>
                 <th style="text-align:center">操作</th>
             </tr>
             </thead>
             <tbody style="text-align:center">
             <tr th:each="item : ${session.tableVal}">
-                <td><input class="selectItem" th:data-price="${item[2]}" th:data-quantity="${item[3]}"
-                           th:value="${item[7]}" type="checkbox"/></td>
+                <td><input class="selectItem" th:value="${item[5]}" type="hidden"/></td>
+                <td th:text="${item[0]}">用户名称</td>
                 <td th:text="${item[1]}">商品名称</td>
-                <td th:text="${item[3]}">数量</td>
-                <td th:text="${item[4]}">总金额</td>
-                <td th:text="${categoryMap.get(__${item[5]}__)}">分类</td>
-                <td th:text="${orderStatusMap.get(item[6])}">状态</td>
+                <td th:text="${item[2]}">数量</td>
+                <td th:text="${item[3]}">总金额</td>
+                <td th:text="${item[6]}">订单状态</td>
+                <td th:text="${item[4]}">收货地址</td>
                 <td>
-                    <button class="deleteButton" th:data-id="${item[7]}">删除</button>
+                    <button class="deliveryButton" th:data-id="${item[5]}">发货</button>
                 </td>
             </tr>
             </tbody>
         </table>
-        <div>
-            已选择 <span>0</span> 件，共 <span>00.00</span> 元
-        </div>
-        <button class="deleteMore">删除</button>
-        <button class="selectAllButton">全选</button>
     </div>
 
     <!--商品管理-->
@@ -202,7 +198,6 @@
         <button class="addMoreToCart">加入购物车</button>
     </div>
 </div>
-
 
 
 <!-- SECTION -->
@@ -319,10 +314,6 @@
 <script src="/js/nouislider.min.js"></script>
 <script src="/js/jquery.zoom.min.js"></script>
 <script src="/js/main.js"></script>
-<script src="/js/personDelete.js"></script>
-<script src="/js/personSettle.js"></script>
-<script src="/js/personAddCart.js"></script>
-<script src="/js/personReceipt.js"></script>
-<script src="/js/updateQuantity.js"></script>
+<script src="/js/orderDelivery.js"></script>
 </body>
 </html>

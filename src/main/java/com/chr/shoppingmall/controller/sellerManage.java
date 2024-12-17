@@ -6,13 +6,15 @@ import com.chr.shoppingmall.entity.product;
 import com.chr.shoppingmall.service.Impl.sellerServiceImpl;
 import com.chr.shoppingmall.utils.loginUtil;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: 程浩然
@@ -20,6 +22,7 @@ import java.util.List;
  * @Description: 用于商家的操作
  */
 @Controller
+@Slf4j
 public class sellerManage {
     @Autowired
     private sellerServiceImpl sellerService;
@@ -80,16 +83,25 @@ public class sellerManage {
 
 
     /**
-     * TODO 订单管理
+     * 订单管理
      */
     @RequestMapping(value = "/seller/orderManage", method = RequestMethod.GET)
     public String orderManage(HttpSession session) {
         Integer sellerId = (Integer) session.getAttribute("sellerId");
         List<order> orders = sellerService.orderManage(sellerId);
-        session.setAttribute("tableVal", orders);
+        List<String[]> orderStrings = sellerService.getOrderString(orders);
+        session.setAttribute("tableVal", orderStrings);
         session.setAttribute("tableName", "订单管理");
         return "sellerView";
     }
+
+    @PostMapping("/seller/orderDelivery")
+    public ResponseEntity<?> orderDelivery(HttpSession session, @RequestBody Map<String, String> request) {
+        Integer orderId = Integer.valueOf(request.get("itemId"));
+        sellerService.Delivery(orderId);
+        return ResponseEntity.ok().body(Collections.singletonMap("message", "发货成功"));
+    }
+
 
     /**
      * TODO 商品管理
